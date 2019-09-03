@@ -1,6 +1,6 @@
-from EntityRelation.core.core import EntityPair
-from EntityRelation.core.extract_by_dsnf import ExtractByDSNF
-from EntityRelation.utils.utils import is_entity, get_entity_num_between
+from .core import EntityPair
+from .extract_by_dsnf import ExtractByDSNF
+from ..utils.utils import is_entity, get_entity_num_between
 
 
 class Extractor(object):

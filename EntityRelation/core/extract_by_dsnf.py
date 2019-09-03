@@ -1,5 +1,5 @@
-from EntityRelation.core.core import WordUnit
-from EntityRelation.utils.utils import is_entity
+from .core import WordUnit
+from ..utils.utils import is_entity
 
 
 class ExtractByDSNF(object):

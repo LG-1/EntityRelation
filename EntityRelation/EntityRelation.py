@@ -7,8 +7,8 @@ from tqdm import tqdm
 
 from pyltp import Postagger, NamedEntityRecognizer, Parser
 
-from EntityRelation.core.core import EntityCombine, WordUnit, SentenceUnit
-from EntityRelation.core.extractor import Extractor
+from .core.core import EntityCombine, WordUnit, SentenceUnit
+from .core.extractor import Extractor
 
 
 class EntityRelation:

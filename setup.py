@@ -13,7 +13,7 @@ here = path.abspath(path.dirname(__file__))
 
 setup(
     name='EntityRelation',
-    version='1.0.2',
+    version='1.0.3',
     description='A package to extract relations between entities. '
                 'this maybe helpful and a important link for constructing KG. '
                 'base on DSNF(Dependency Semantic Normal Forms) for now. ',
