@@ -241,3 +241,7 @@ class EntityCombine(object):
         if netag in {'ns', 'ni', 'nh', 'nz', 'j'}:
             flag = True
         return flag
+
+
+if __name__ == '__main__':
+    pass

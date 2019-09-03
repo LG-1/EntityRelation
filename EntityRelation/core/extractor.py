@@ -30,14 +30,14 @@ class Extractor(object):
 
             re3 = extract_dsnf.SBVorFOB_POB_VOB(entity1, entity2)
 
-            # [DSNF1]
-            # if not extract_dsnf.E_NN_E(entity1, entity2):
-            #     pass
             # [DSNF3|DSNF5|DSNF6]，并列实体中的主谓宾可能会包含DSNF3
             re4 = extract_dsnf.coordinate(entity1, entity2)
 
             # ["的"短语]
             re5 = extract_dsnf.entity_de_entity_NNT(entity1, entity2)
+
+            # # [DSNF1]
+            # re6 = extract_dsnf.E_NN_E(entity1, entity2)
 
             for i in (re1, re2, re3, re4, re5):
                 if i is not None:

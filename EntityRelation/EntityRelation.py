@@ -1,4 +1,5 @@
 import os
+import re
 import jieba
 import requests
 import zipfile
@@ -16,9 +17,10 @@ class EntityRelation:
 
     def __init__(self, model_pth=None,
                  user_dict_pth=os.path.dirname(__file__) + '/resource/user_dict.txt'):
-        # file_pth = os.path.abspath(__file__)
-        # user_dict_pth = file_pth[:file_pth.rindex('/')] + '/resource/user_dict.txt'
-        # user_dict_pth = os.path.dirname(__file__) + '/resource/user_dict.txt'
+        """
+        :param model_pth: 模型路径，如果不存在将下架至此路径下
+        :param user_dict_pth: 分词词典，可以自定义指定自己的分词词典
+        """
         self.user_dict_pth = user_dict_pth
 
         try:
@@ -44,7 +46,6 @@ class EntityRelation:
         try:
             # 加载ltp模型
             # 词性标注模型
-
             self.postagger = Postagger()
             self.postagger.load(pos_pth)
             # 命名实体识别模型
@@ -57,12 +58,16 @@ class EntityRelation:
             print('Failed to load ltp model')
 
     def get_entity_relation(self, sentence):
-        sen_lemmas = self.segment(sentence)
-        sen_pos = self.postag(sen_lemmas)
-        sen_netag = self.netag(sen_pos)
-        ltp_sentence = self.parse(sen_netag)
+        sub_sentences = [i for i in re.split('[。？！；]|\n', sentence) if len(i) >= 6]  # 简单的长句切分策略
+        res = []
+        for sub_sentence in sub_sentences:
+            sen_lemmas = self.segment(sub_sentence)
+            sen_pos = self.postag(sen_lemmas)
+            sen_ner_tag = self.ner_tag(sen_pos)
+            ltp_sentence = self.parse(sen_ner_tag)
 
-        res = Extractor().extract(sentence, ltp_sentence)
+            temp = Extractor().extract(sub_sentence, ltp_sentence)
+            res.extend(temp)
         return res
 
     def segment(self, sentence, entity_postag=dict()):
@@ -85,7 +90,6 @@ class EntityRelation:
         """对分词后的结果进行词性标注
         Args:
             lemmas: list，分词后的结果
-            entity_dict: set，实体词典，处理具体的一则判决书的结构化文本时产生
         Returns:
             words: WordUnit list，包含分词与词性标注结果
         """
@@ -109,7 +113,7 @@ class EntityRelation:
         post_tag = self.postagger.postag([word, ])
         return post_tag[0]
 
-    def netag(self, words):
+    def ner_tag(self, words):
         """命名实体识别，并对分词与词性标注后的结果进行命名实体识别与合并
         Args:
             words: WordUnit list，包含分词与词性标注结果
@@ -163,7 +167,8 @@ class EntityRelation:
 
 
 if __name__ == '__main__':
-    test_sentence = '李晨 黄渤 范冰冰在上海参加国际电影节'
+    test_sentence1 = '中国国家主席习近平访问韩国，并在首尔大学发表演讲！中国国家主席习近平访问韩国，并在首尔大学发表演讲！中国国家主席习近平访问韩国，并在首尔大学发表演讲'
+    test_sentence2 = '李晨 黄渤 范冰冰在上海参加国际电影节'
     er = EntityRelation()
-    ress = er.get_entity_relation(test_sentence)
+    ress = er.get_entity_relation(test_sentence1)
     print(ress)
