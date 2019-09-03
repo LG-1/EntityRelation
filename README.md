@@ -13,7 +13,7 @@ A package to extract relations between entities. this maybe helpful and a import
 
 # 使用及效果示例
 （第一次使用由于需要去下载ltp模型，所以实例化的时候可能会等待几分钟）
-<p align="left"><img src="images/sample.png?raw=true"/></p>
+<p align="center"><img src="images/sample.png?raw=true"/></p>
 
 # 安装
 可以直接通过pip安装
